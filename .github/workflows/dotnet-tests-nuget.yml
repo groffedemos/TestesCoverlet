@@ -33,9 +33,14 @@ jobs:
       if: failure()
       run: |
         cd ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults
+        ls        
+        # Acessar diretório gerado com o XML de Cobertura de código
+        cd $(ls -d */|head -n 1)
         ls
 
   pack-push:
+    needs: [tests]
+    
     env:
       CAMINHO_PROJETO: ./Groffe.Distancias/Groffe.Distancias.csproj
 
