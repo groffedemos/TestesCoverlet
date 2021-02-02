@@ -38,7 +38,7 @@ jobs:
         cd $(ls -d */|head -n 1)
         reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
 
-    - name: Upload dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
+    - name: Upload como Artifact dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
       uses: actions/upload-artifact@v2.2.2
       env:
         CAMINHO_RESULTADO_TESTES: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/
@@ -48,11 +48,11 @@ jobs:
         path: ${{ env.CAMINHO_RESULTADO_TESTES }}
         retention-days: 30
 
-    - name: Upload do Report de Testes com Falhas como Artifact
+    - name: Upload como Artifact do Report de Testes com Falhas
       uses: actions/upload-artifact@v2.2.2
       if: failure()
       env:
-        CAMINHO_RELATORIO_ERROS: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/resultado-erros-testes.html
+        CAMINHO_RELATORIO_ERROS: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/resultado-testes.html
       with:
         name: resultado-erros-testes
         path: ${{ env.CAMINHO_RELATORIO_ERROS }}
