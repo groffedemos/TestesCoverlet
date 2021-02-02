@@ -27,25 +27,22 @@ jobs:
       run: dotnet test ${{ env.CAMINHO_PROJETO_TESTES }} --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"
 
     - name: Instalar ReportGenerator
-      if: failure()
+      if: success()
       run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.4
   
     - name: Gerar relatório de cobertura de testes com ReportGenerator
-      if: failure()
+      if: success()
       run: |
         cd ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults
-        ls        
         # Acessar diretório gerado com o XML de Cobertura de código
         cd $(ls -d */|head -n 1)
-        ls
         reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
-        ls
 
-    - name: Upload dos Reports de Resultado de Execução dos Testes + Cobertura de Código
+    - name: Upload dos Reports de Resultado de Testes Executados com Sucesso + Cobertura de Código
       uses: actions/upload-artifact@v2.2.2
       env:
         CAMINHO_RESULTADO_TESTES: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/
-      if: failure()
+      if: success()
       with:
         name: resultado-testes
         path: ${{ env.CAMINHO_RESULTADO_TESTES }}
@@ -53,7 +50,7 @@ jobs:
 
     - name: Upload do Report de Testes com Falhas como Artifact
       uses: actions/upload-artifact@v2.2.2
-      if: success()
+      if: failure()
       env:
         CAMINHO_RELATORIO_ERROS: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/resultado-erros-testes.html
       with:
