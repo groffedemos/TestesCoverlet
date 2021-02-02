@@ -9,7 +9,7 @@ namespace Groffe.Distancias
             Math.Round(milhas * 1.609, 3);
 
         public static double KmParaMilhas(double km) =>
-            km / 1.609; // Simulação de falha
-            //Math.Round(km / 1.609, 3);
+            //km / 1.609; // Simulação de falha
+            Math.Round(km / 1.609, 3);
     }
 }
