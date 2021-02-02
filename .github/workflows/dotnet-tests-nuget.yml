@@ -9,6 +9,7 @@ on:
 env:
   CAMINHO_PROJETO_TESTES: ./Groffe.Distancias.Testes
   CAMINHO_PROJETO: ./Groffe.Distancias/Groffe.Distancias.csproj
+  NUGET_SERVER: https://api.nuget.org/v3/index.json
 
 jobs:
   tests:
@@ -80,4 +81,4 @@ jobs:
     - name: Push no NuGet
       run: |
         cd out
-        dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_SERVER }} --skip-duplicate
+        dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ env.NUGET_SERVER }} --skip-duplicate
