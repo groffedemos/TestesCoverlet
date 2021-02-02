@@ -8,6 +8,7 @@ on:
 
 env:
   CAMINHO_PROJETO_TESTES: ./Groffe.Distancias.Testes
+  CAMINHO_RESULTADO_HTML_TESTES: $CAMINHO_PROJETO_TESTES/TestResults/resultado-testes.html
   CAMINHO_PROJETO: ./Groffe.Distancias/Groffe.Distancias.csproj
 
 jobs:
@@ -33,12 +34,24 @@ jobs:
     - name: Gerar relatório de cobertura de testes com ReportGenerator
       if: failure()
       run: |
+        echo ${{ env.CAMINHO_RESULTADO_HTML_TESTES }}
         cd ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults
         ls        
         # Acessar diretório gerado com o XML de Cobertura de código
         cd $(ls -d */|head -n 1)
         ls
         reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
+        ls
+
+    - name: Upload do Report de Testes com Falhas como Artifact
+      uses: actions/upload-artifact@v2.2.2
+      if: sucess()
+      env:
+        CAMINHO_RELATORIO_ERROS: ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults/resultado-erros-testes.html
+      with:
+        name: resultado-falha-testes
+        path: ${{ env.CAMINHO_RELATORIO_ERROS }}
+        retention-days: 30
 
   pack-push:
     needs: [tests]
