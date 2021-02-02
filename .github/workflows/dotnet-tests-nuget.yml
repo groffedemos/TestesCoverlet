@@ -37,6 +37,7 @@ jobs:
         # Acessar diretório gerado com o XML de Cobertura de código
         cd $(ls -d */|head -n 1)
         ls
+        reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
 
   pack-push:
     needs: [tests]
